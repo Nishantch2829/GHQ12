@@ -29,10 +29,14 @@ const GHQ12Screening = () => {
   };
 
   const calculateScore = () => {
-    return responses.reduce((acc, curr) => acc + (curr || 0), 0);
+    return responses.every(response => response !== null) ? responses.reduce((acc, curr) => acc + (curr || 0), 0) : "Incomplete";
   };
 
   const generatePDF = () => {
+    if (responses.includes(null)) {
+      alert("Please answer all questions before generating the PDF.");
+      return;
+    }
     const doc = new jsPDF();
     doc.text("GHQ-12 Screening Results", 20, 20);
     questions.forEach((q, i) => {
